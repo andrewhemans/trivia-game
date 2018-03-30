@@ -57,6 +57,7 @@ $( "#button" ).click(function() {
     setTimeout(loopQuestions, 1000 * 4);
   }
 
+// This will display the scores at the end of the game
 function score() {
   $("#middle").append("<p>Correct Anwsers: " + correct + "</p>");
   $("#middle").append("<p>Wrong Anwsers: " + wrong + "</p>");
@@ -65,6 +66,7 @@ function score() {
   $("#show-questions").remove();
 }
 
+// this will restart the game
 function playAgain() {
   location.reload();
 }
@@ -93,18 +95,18 @@ function loopQuestions() {
       });
   }
 }
+
 //this displays the options users can choose
 function options() {
   for (var i = 0; i < questions[questionNumber].options.length; i++) {
-    // console.log(current.options[i]);
     $("#list").append("<li class='options' id='" + questions[questionNumber].options[i] + "'>" + questions[questionNumber].options[i] + "</li>");
   }
 }
 
-// this will detirmine if the select option is right or wrong.
+// this will determine if the select option is right or wrong.
 function selectAnswer() {
   //if right answer show correct, and log score
-    if (questions[questionNumber].answer === userAnswer) {
+  if (questions[questionNumber].answer === userAnswer) {
     win();
     stop();
     questionNumber++;
@@ -121,9 +123,8 @@ function selectAnswer() {
   }
 }
 
-
+//if a wrong answer is chosen this will display
 function lose() {
-  // $("#show-questions").html("<p>Sorry Thats Wrong</p>");
   $("#show-questions").append("<p id='wrong'>Sorry Thats Wrong</p>");
   $("#show-questions").append("<p>The right answer was:</p>");
   $("#show-questions").append("<p id='wrong-answer'>" + questions[questionNumber].answer + "</p>");
@@ -134,6 +135,7 @@ function lose() {
   wrong++
 }
 
+//if a right answer is chosen this will display
 function win() {
   $("#show-questions").html("<p id='right'>Thats Right!</p>");
   $( "#list" ).remove();
@@ -142,11 +144,8 @@ function win() {
   correct++
 }
 
-//select a question from array
 
 //Time Questions
-
-
 //display countdown on screen
 function run() {
   clearInterval(intervalId);
@@ -166,8 +165,6 @@ function decrement() {
 
   //  Once number hits zero...
   if (time === 0) {
-
-    //  ...run the stop function.
     stop();
     lose();
     questionNumber++;
@@ -177,19 +174,6 @@ function decrement() {
 
 //  The stop function
 function stop() {
-
-  //  Clears our intervalId
-  //  We just pass the name of the interval
-  //  to the clearInterval function.
   clearInterval(intervalId);
   time = 30;
-  console.log(time);
 }
-
-
-
-
-
-
-
-//remove question from array so its not asked again
