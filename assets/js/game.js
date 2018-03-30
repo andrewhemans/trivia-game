@@ -50,20 +50,32 @@ var wrong = 0;
 
 $( "#button" ).click(function() {
   loopQuestions();
-  run();
   $("#button").remove();
-  console.log(questionNumber);
   });
 
   function nextQuestion() {
-    setTimeout(loopQuestions, 1000 * 5);
+    setTimeout(loopQuestions, 1000 * 4);
   }
+
+function score() {
+  $("#middle").append("<p>Correct Anwsers: " + correct + "</p>");
+  $("#middle").append("<p>Wrong Anwsers: " + wrong + "</p>");
+  $("#middle").append("<button id='play-again'>Play Again?</button>");
+  $("#show-number").remove();
+  $("#show-questions").remove();
+}
+
+function playAgain() {
+  location.reload();
+}
 
 
 
 // this will choose each question
 function loopQuestions() {
+
   if (questionNumber < questions.length) {
+    run();
     $("#show-questions").html("<h2 class='subtitle'>" + questions[questionNumber].text + "</h2>");
     $("#show-questions").append("<ul id='list'></ul>")
     options();
@@ -74,6 +86,11 @@ function loopQuestions() {
     });
   } else if (questionNumber === questions.length) {
     questionNumber = 0;
+    score();
+
+    $("#play-again").click(function() {
+      playAgain();
+      });
   }
 }
 //this displays the options users can choose
@@ -88,17 +105,17 @@ function options() {
 function selectAnswer() {
   //if right answer show correct, and log score
     if (questions[questionNumber].answer === userAnswer) {
-    correct++
+    win();
+    stop();
     questionNumber++;
+    // wait to start next question
+    nextQuestion();
   }
   //if wrong answer show correct and log score
   else {
-    console.log("wrong");
     lose();
     stop();
-    wrong++
     questionNumber++;
-    console.log(questionNumber);
     // wait to start next question
     nextQuestion();
   }
@@ -106,11 +123,24 @@ function selectAnswer() {
 
 
 function lose() {
-  $("#show-questions").html("<p>you lose</p>");
+  // $("#show-questions").html("<p>Sorry Thats Wrong</p>");
+  $("#show-questions").append("<p id='wrong'>Sorry Thats Wrong</p>");
+  $("#show-questions").append("<p>The right answer was:</p>");
+  $("#show-questions").append("<p id='wrong-answer'>" + questions[questionNumber].answer + "</p>");
   $( "#list" ).remove();
   $("#show-number").html("<p></p>");
+  $("#show-questions").append("<img src='assets/images/george.gif'>");
+
+  wrong++
 }
 
+function win() {
+  $("#show-questions").html("<p id='right'>Thats Right!</p>");
+  $( "#list" ).remove();
+  $("#show-number").html("<p></p>");
+  $("#show-questions").append("<img src='assets/images/kramer.gif'>");
+  correct++
+}
 
 //select a question from array
 
@@ -131,7 +161,7 @@ function decrement() {
   time--;
 
   //  Show the number in the #show-number tag.
-  $("#show-number").html("<h2>" + time + "</h2>");
+  $("#show-number").html("<h2>" + time + "</h2><p> &nbsp;seconds left!</p>");
     // console.log(time);
 
   //  Once number hits zero...
@@ -141,6 +171,7 @@ function decrement() {
     stop();
     lose();
     questionNumber++;
+    nextQuestion();
   }
 }
 
